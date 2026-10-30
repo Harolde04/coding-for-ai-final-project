@@ -29,8 +29,11 @@ E = Autres (santé, téléphone, vêtements, hygiène, cadeaux, fournitures, fra
 Réponds par une seule lettre : A, B, C, D ou E."""
 
 
-def interroger_qwen(texte, url=URL_OLLAMA, modele=MODELE):
-    """Envoie la dépense à Qwen et renvoie la réponse brute d'Ollama."""
+def interroger_qwen(texte, url=URL_OLLAMA, modele=MODELE, temperature=0):
+    """Envoie la dépense à Qwen et renvoie la réponse brute d'Ollama.
+
+    temperature : 0 en usage normal ; 0,7 pour la comparaison de la brique 9.
+    """
     corps = {
         "model": modele,
         "messages": [
@@ -44,7 +47,7 @@ def interroger_qwen(texte, url=URL_OLLAMA, modele=MODELE):
         # Le modèle Ollama a presence_penalty = 1,5 par défaut : elle pénalise les
         # lettres déjà écrites dans le prompt APRÈS le calcul des logprobs, si bien
         # que Qwen peut renvoyer une lettre qui n'est pas la plus probable. On la coupe.
-        "options": {"temperature": 0, "num_ctx": 4096, "num_predict": 1,
+        "options": {"temperature": temperature, "num_ctx": 4096, "num_predict": 1,
                     "presence_penalty": 0, "repeat_penalty": 1.0},
     }
     requete = urllib.request.Request(

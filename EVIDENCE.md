@@ -201,4 +201,81 @@ python -m pytest tests/test_nettoyage_moneydata.py
 
 ## Brique 9 — Une comparaison mesurée
 
-*À venir.*
+**Ce que je montre.** Mon système face à Qwen seul, sur 40 tâches à réponse
+connue, 5 lancements chacun, avec moyenne, dispersion et un échec expliqué
+à partir de sa trace.
+
+**Les tâches.** Les 40 cas de `data/cas_etiquetes.csv`. Une tâche est réussie si
+le montant retenu est exact **et** : cas clair → enregistrement automatique dans
+la bonne catégorie ; cas ambigu → demande de confirmation.
+
+**Les deux côtés** (mêmes réglages : Qwen3.5-4B, température 0,7, réflexion
+désactivée, `presence_penalty` 0) :
+- **Qwen seul** : prompt nu (les 5 catégories, sans mes règles) ; il répond en
+  JSON `{montant, categorie, confirmation}` et décide de tout lui-même.
+- **Mon système** : juge par logprobs + seuil 0,90 (brique 4), règle G5 et
+  montant lu par Python (brique 3).
+
+**Résultats** (`resultats/comparaison.md`, taux de réussite par lancement) :
+
+| Côté | Toutes (40) | Claires (30) | Ambiguës (10) |
+|---|---|---|---|
+| Qwen seul | **58,0 % ± 2,1 %** (55,0–60,0) | 68,7 % ± 1,8 % | 26,0 % ± 8,9 % |
+| Mon système | **74,5 % ± 1,1 %** (72,5–75,0) | 66,0 % ± 1,5 % | 100,0 % ± 0,0 % |
+
+(moyenne ± écart-type sur 5 lancements, entre parenthèses min–max)
+
+**Lecture.** Le gain vient entièrement des cas ambigus : Qwen seul ne demande
+presque jamais confirmation (« Paiement PayPal 9,99 € » → `confirmation: false`
+5 fois sur 5, avec une catégorie qui change : D trois fois, E deux fois),
+mon système la demande toujours. Sur les cas clairs,
+mon système fait un peu moins bien (66,0 % contre 68,7 %) : c'est le prix des
+fausses alertes du seuil 0,90. Aucun des deux côtés ne s'est trompé de montant
+(0 sur 200 pour Qwen seul).
+
+**Un échec expliqué à partir de sa trace : tâche 10, « Billet de train SNCF
+pour Lyon pour les vacances 45 € ».** Qwen seul la réussit 5 fois sur 5, mon
+système 0 fois sur 5. Trace du juge (`resultats/traces_comparaison.jsonl`,
+identique aux 5 lancements) :
+
+```
+token renvoyé : 'B'   cohérent : oui
+scores : A 0.041   B 0.799   C 0.029   D 0.112   E 0.019
+```
+
+La catégorie est juste (B), mais le score 0,799 est sous le seuil 0,90 : le
+système demande une confirmation inutile. Les 11 % donnés à D (Loisirs) viennent
+du mot « vacances » : Qwen classe selon le motif du voyage, alors que ma règle
+classe selon la nature de l'achat (principe général et R-B3). C'est une fausse
+alerte, pas une erreur d'enregistrement : le coût est un clic.
+
+**Deuxième échec, qui explique la dispersion du système : tâche 3, « Resto U ce
+midi : 3,30 € », lancement 3.** Les logprobs ne dépendent pas de la température
+(A 0,93 aux 5 lancements), mais le token tiré, lui, en dépend : à 0,7, Qwen a
+tiré « D » (probabilité 5,8 %). Le contrôle de cohérence (lettre renvoyée ≠ lettre
+la plus probable) a transformé la réponse en demande de confirmation. Toute la
+dispersion de mon système vient de ce tirage ; elle disparaît à température 0,
+qui est le réglage de l'assistant.
+
+**Un défaut de mesure trouvé et corrigé.** Au premier calcul, Qwen seul n'avait
+que 10,5 % de réussite : 161 réponses sur 200 étaient comptées « JSON invalide ».
+Les traces montraient un JSON correct entouré de balises Markdown (Ollama
+n'impose pas `format` quand la réflexion est désactivée). Le lecteur a été
+corrigé et le score recalculé depuis les traces brutes, sans relancer Qwen
+(`test_lecture_reponse_json_de_qwen_seul`).
+
+**Limites.** Les mots-clés de G5 et le seuil 0,90 ont été choisis en connaissant
+ces 40 cas : l'écart mesuré est optimiste pour mon système. 10 cas ambigus, c'est
+peu. Le prompt de Qwen seul n'a pas été optimisé : un meilleur prompt réduirait
+sans doute l'écart.
+
+**Fichiers.** `src/comparer.py`, `resultats/traces_comparaison.jsonl`,
+`resultats/comparaison.md`, `tests/test_comparer.py`.
+
+**Commandes pour reproduire** (Ollama lancé) :
+
+```bash
+python src/comparer.py                  # 400 appels à Qwen, environ 10 minutes
+python src/comparer.py --depuis-traces  # recalcule depuis les traces
+python -m pytest tests/test_comparer.py
+```
