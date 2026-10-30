@@ -29,6 +29,22 @@ source .venv/bin/activate        # Windows : .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+## Modèle
+
+Installer [Ollama](https://ollama.com), puis :
+
+```bash
+ollama pull qwen3.5:4b-q4_K_M
+python src/juge_qwen.py "J'ai payé 35 € chez Carrefour"
+```
+
+Le juge renvoie une catégorie, son score et la décision (`auto` si le score
+est ≥ 0,90, sinon `confirmer`). Évaluation sur les 40 cas étiquetés :
+
+```bash
+python src/evaluer_juge.py
+```
+
 ## Données réelles (brique 6)
 
 Le fichier brut n'est pas dans le dépôt : il contient des noms de particuliers.

@@ -10,8 +10,62 @@
 
 ## Brique 4 — Un modèle de décision
 
-*À venir.* Jeu étiqueté prêt : `data/cas_etiquetes.csv` (40 cas, 30 `auto`,
-10 `confirmer`), règles dans `REGLES_METIER.md`.
+**Ce que je montre.** Un juge lu dans Qwen3.5-4B : un score par catégorie,
+un seuil choisi à partir des mesures, et ses ratés et fausses alertes sur
+40 cas étiquetés à la main.
+
+**Le score.** Qwen répond par une seule lettre A–E (réflexion désactivée,
+température 0). On lit les logprobs des cinq lettres sur ce premier token et on
+les renormalise sur A–E. C'est un score de décision, **pas une probabilité
+calibrée** : les autres tokens sont écartés (au plus 5,7 % de la masse sur les
+40 cas). Le code vérifie avant d'utiliser le score que le token renvoyé est une
+lettre et qu'il est bien la lettre la plus probable ; sinon : confirmation.
+
+**Un défaut trouvé en testant.** Le modèle Ollama applique par défaut
+`presence_penalty = 1.5`, après le calcul des logprobs : Qwen renvoyait « A »
+pour « Amazon 25 € » alors que ses logprobs donnaient E à 0,65 contre A à 0,26.
+Pénalité mise à 0, et contrôle de cohérence ajouté
+(`test_lettre_renvoyee_qui_n_est_pas_la_plus_probable_est_invalide`).
+
+**Les cas étiquetés.** `data/cas_etiquetes.csv` : 40 cas (30 clairs `auto`,
+10 ambigus `confirmer`), chacun justifié par une règle de `REGLES_METIER.md`.
+- Raté : enregistrement automatique d'un cas ambigu, ou dans la mauvaise catégorie.
+- Fausse alerte : demande de confirmation sur un cas clair.
+
+**Résultats** (`resultats/evaluation_juge.md`, 1 lancement par cas) :
+
+| Seuil | Ratés : ambigu enregistré | Ratés : mauvaise catégorie | Fausses alertes |
+|---|---|---|---|
+| 0,70 | 6 / 10 | 2 | 3 / 30 |
+| 0,80 | 4 / 10 | 1 | 8 / 30 |
+| **0,90 (retenu)** | **1 / 10** | **0** | **10 / 30** |
+| 0,95 | 1 / 10 | 0 | 15 / 30 |
+
+**Choix du seuil : 0,90.** Le seuil prévu au départ était 0,80. Je l'ai remonté
+après la mesure : un raté fausse le budget en silence, une fausse alerte coûte
+un clic. Passer de 0,80 à 0,90 retire 4 ratés pour 2 fausses alertes de plus ;
+au-delà, 0,95 ajoute 5 fausses alertes sans retirer de raté.
+
+**Le raté restant.** « Paiement PayPal 9,99 € » : Qwen répond E avec 0,953.
+Le score mesure l'hésitation entre lettres, pas l'absence d'information : Qwen
+ne peut pas répondre « je ne sais pas ». Ce cas relève d'une règle imposée par
+le code (brique 3), pas d'un seuil.
+
+**Limites.** Le seuil est choisi sur les mêmes 40 cas que ceux qui le mesurent :
+le résultat est optimiste. Avec 10 cas ambigus, un écart d'un ou deux ratés
+reste fragile.
+
+**Fichiers.** `src/juge_qwen.py`, `src/evaluer_juge.py`,
+`resultats/traces_juge.jsonl` (réponse brute de Qwen par cas),
+`resultats/evaluation_juge.md`, `tests/test_juge_qwen.py`, `tests/test_evaluer_juge.py`.
+
+**Commandes pour reproduire** (Ollama lancé, `ollama pull qwen3.5:4b-q4_K_M`) :
+
+```bash
+python src/evaluer_juge.py                  # interroge Qwen, environ 1 minute
+python src/evaluer_juge.py --depuis-traces  # recalcule sans Qwen
+python -m pytest tests/test_juge_qwen.py tests/test_evaluer_juge.py
+```
 
 ## Brique 6 — Données sales, décisions écrites
 
