@@ -1,0 +1,19 @@
+{
+  "budget_mensuel": "600.00",
+  "depenses": [
+    {
+      "date": "2026-10-30",
+      "texte": "J'ai payé 35 € chez Carrefour",
+      "montant": "35.00",
+      "categorie": "A",
+      "confirme_par_utilisateur": false
+    },
+    {
+      "date": "2026-10-30",
+      "texte": "Paiement PayPal 9,99 €",
+      "montant": "9.99",
+      "categorie": "D",
+      "confirme_par_utilisateur": true
+    }
+  ]
+}

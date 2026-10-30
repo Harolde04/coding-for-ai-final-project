@@ -45,6 +45,17 @@ est ≥ 0,90, sinon `confirmer`). Évaluation sur les 40 cas étiquetés :
 python src/evaluer_juge.py
 ```
 
+## Utiliser l'assistant
+
+```bash
+python src/assistant.py
+```
+
+Exemple : « Mon budget pour ce mois est de 600 € », puis
+« J'ai payé 35 € chez Carrefour », puis « Combien il me reste ? ».
+Les dépenses sont gardées dans `donnees/registre.json` (hors du dépôt).
+Conversation de démonstration rejouable : `python src/demo_assistant.py`.
+
 ## Données réelles (brique 6)
 
 Le fichier brut n'est pas dans le dépôt : il contient des noms de particuliers.

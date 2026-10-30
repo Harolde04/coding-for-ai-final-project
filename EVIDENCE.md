@@ -2,7 +2,50 @@
 
 ## Brique 1 — Votre propre outil
 
-*À venir.*
+**Ce que je montre.** Une boucle d'agent écrite à la main (`src/assistant.py`)
+dans laquelle Qwen3.5-4B appelle trois outils Python que j'ai écrits, avec la
+trace d'une vraie conversation : chaque appel, ses arguments et son résultat.
+
+| Outil | Ce que fait le code |
+|---|---|
+| `enregistrer_depense(montant, categorie)` | relit le **message de l'utilisateur** (pas un texte réécrit par le modèle), interroge le juge (brique 4), demande confirmation si besoin, puis passe par les garde-fous G1–G5 (brique 3) avant d'écrire dans le registre |
+| `calculer_budget()` | total, total par catégorie et budget restant du mois, calculés en `Decimal` par `src/budget.py` |
+| `definir_budget(montant)` | fixe le budget mensuel ; un budget négatif est refusé (G1) |
+
+Le modèle ne fait aucun calcul : le prompt le lui interdit, et surtout les
+chiffres qu'il annonce viennent du résultat de `calculer_budget`.
+Si le modèle de chat et le juge ne proposent pas la même catégorie, l'outil
+demande une confirmation.
+
+**Trace d'une vraie conversation** (`resultats/trace_demo_assistant.jsonl`) :
+
+| Utilisateur | Appel d'outil par Qwen | Ce que fait le code | Résultat |
+|---|---|---|---|
+| « Mon budget pour ce mois est de 600 € » | `definir_budget(montant=600)` | — | budget 600.00 |
+| « J'ai payé 35 € chez Carrefour » | `enregistrer_depense(montant=35, categorie="A")` | juge : A à 0,994 → `auto` | enregistré, sans question |
+| « Paiement PayPal 9,99 € » | `enregistrer_depense(montant=9.99, categorie="E")` | juge : E à 0,953, mais G5 (PayPal) → confirmation ; l'utilisateur corrige en D | enregistré en D, confirmé |
+| « J'ai payé -10 € au cinéma » | `enregistrer_depense(montant=-10, categorie="D")` | G1 | **refusé** : montant négatif |
+| « Combien il me reste ? » | `calculer_budget()` | Python : 600 − 44,99 | restant **555.01** |
+
+Réponse finale de Qwen : « Il vous reste 555,01 € sur votre budget de 600 €.
+Vous avez dépensé un total de 44,99 €, soit 35 € pour l'alimentation et
+9,99 € pour les loisirs. » — chiffres identiques au résultat de l'outil.
+
+**Tests** (`tests/test_assistant.py`, avec un faux modèle qui rejoue des
+réponses au format d'Ollama) : calcul du budget, registre qui survit à un
+redémarrage, montant changé par le modèle refusé (G2), désaccord modèle/juge,
+transfert, annulation, outil inconnu, arrêt après 5 tours, contenu de la trace.
+
+**Fichiers.** `src/assistant.py`, `src/budget.py`, `src/demo_assistant.py`,
+`resultats/trace_demo_assistant.jsonl`, `tests/test_assistant.py`.
+
+**Commandes pour reproduire** (Ollama lancé) :
+
+```bash
+python src/demo_assistant.py   # conversation rejouable, réécrit la trace
+python src/assistant.py        # conversation libre
+python -m pytest tests/test_assistant.py
+```
 
 ## Brique 3 — Une règle imposée par le code
 

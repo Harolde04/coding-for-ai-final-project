@@ -1,0 +1,23 @@
+{"horodatage": "2026-10-30T20:11:32", "etape": "utilisateur", "contenu": "Mon budget pour ce mois est de 600 €"}
+{"horodatage": "2026-10-30T20:11:43", "etape": "appel_outil", "outil": "definir_budget", "arguments": {"montant": 600}}
+{"horodatage": "2026-10-30T20:11:43", "etape": "resultat_outil", "outil": "definir_budget", "resultat": {"statut": "budget_defini", "budget_mensuel": "600.00"}}
+{"horodatage": "2026-10-30T20:11:54", "etape": "modele", "contenu": "Votre budget mensuel est fixé à 600 €. Je suis prêt pour vous aider avec vos dépenses !"}
+{"horodatage": "2026-10-30T20:11:54", "etape": "utilisateur", "contenu": "J'ai payé 35 € chez Carrefour"}
+{"horodatage": "2026-10-30T20:12:07", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": 35, "categorie": "A"}}
+{"horodatage": "2026-10-30T20:12:18", "etape": "juge", "lettre": "A", "score": 0.994, "regle_code": null, "decision": "auto"}
+{"horodatage": "2026-10-30T20:12:18", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "enregistre", "montant": "35.00", "categorie": "A Alimentation", "confirme_par_utilisateur": false}}
+{"horodatage": "2026-10-30T20:12:38", "etape": "modele", "contenu": "La dépense de 35 € pour l'alimentation a été enregistrée. Souhaitez-vous voir votre budget restant ou ajouter d'autres dépenses ?"}
+{"horodatage": "2026-10-30T20:12:38", "etape": "utilisateur", "contenu": "Paiement PayPal 9,99 €"}
+{"horodatage": "2026-10-30T20:12:45", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": 9.99, "categorie": "E"}}
+{"horodatage": "2026-10-30T20:12:56", "etape": "juge", "lettre": "E", "score": 0.953, "regle_code": "transfert ou intermédiaire de paiement : « PayPal »", "decision": "confirmer"}
+{"horodatage": "2026-10-30T20:12:56", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "enregistre", "montant": "9.99", "categorie": "D Loisirs", "confirme_par_utilisateur": true}}
+{"horodatage": "2026-10-30T20:13:19", "etape": "modele", "contenu": "La dépense de 9,99 € pour les loisirs a été enregistrée. Souhaitez-vous voir votre budget restant ou ajouter d'autres dépenses ?"}
+{"horodatage": "2026-10-30T20:13:19", "etape": "utilisateur", "contenu": "J'ai payé -10 € au cinéma"}
+{"horodatage": "2026-10-30T20:13:26", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": -10, "categorie": "D"}}
+{"horodatage": "2026-10-30T20:13:37", "etape": "juge", "lettre": "D", "score": 0.957, "regle_code": null, "decision": "auto"}
+{"horodatage": "2026-10-30T20:13:37", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "refuse", "regle": "G1", "motif": "montant négatif ou nul : -10.00"}}
+{"horodatage": "2026-10-30T20:14:03", "etape": "modele", "contenu": "Je ne peux pas enregistrer une dépense de 10 € car les montants doivent être positifs. Souhaitez-vous ajouter d'autres dépenses positives ?"}
+{"horodatage": "2026-10-30T20:14:03", "etape": "utilisateur", "contenu": "Combien il me reste ?"}
+{"horodatage": "2026-10-30T20:14:21", "etape": "appel_outil", "outil": "calculer_budget", "arguments": {}}
+{"horodatage": "2026-10-30T20:14:21", "etape": "resultat_outil", "outil": "calculer_budget", "resultat": {"mois": "2026-10", "nombre_depenses": 2, "total": "44.99", "par_categorie": {"A Alimentation": "35.00", "D Loisirs": "9.99"}, "budget_mensuel": "600.00", "budget_restant": "555.01"}}
+{"horodatage": "2026-10-30T20:14:44", "etape": "modele", "contenu": "Il vous reste 555,01 € sur votre budget de 600 €. Vous avez dépensé un total de 44,99 €, soit 35 € pour l'alimentation et 9,99 € pour les loisirs."}

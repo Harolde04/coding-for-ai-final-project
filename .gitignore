@@ -11,3 +11,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 .env
+
+# Dépenses personnelles de l'utilisateur (registre de l'assistant)
+donnees/
