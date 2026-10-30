@@ -6,7 +6,42 @@
 
 ## Brique 3 — Une règle imposée par le code
 
-*À venir.*
+**Ce que je montre.** Cinq choses que le système ne doit jamais faire, bloquées
+par `src/garde_fous.py` et non par le prompt. Toute dépense passe par
+`verifier_enregistrement`, qui lève `EnregistrementRefuse` avec le code de la
+règle enfreinte. Chaque règle a des tests qui essaient de l'enfreindre.
+
+| Règle | Jamais… | Exemples d'attaques bloquées (tests) |
+|---|---|---|
+| G1 | un montant invalide | `-10 €`, `0 €`, pas de montant, « douze euros », deux montants, montant proposé `"NaN"`, `"inf"`, `"35.001"`, `None` |
+| G2 | un montant différent de celui du texte | texte « 35 € », modèle propose `53`, `350`, `34.99` |
+| G3 | une catégorie hors A–E | `"F"`, `"?"`, `"Alimentation"`, `None` |
+| G4 | enregistrer sans confirmation quand le juge hésite | « Amazon 25 € », décision `confirmer`, pas de confirmation |
+| G5 | enregistrer automatiquement un virement ou paiement par intermédiaire | « Paiement PayPal 9,99 € » avec décision `auto` |
+
+**Le montant est lu par Python, pas par Qwen.** `extraire_montant` lit le
+montant en euros dans le texte (« 3,30 € », « 9€50 », « 18,90 euros »,
+« 1 200 € ») et refuse s'il n'y en a pas exactement un. Testé sur les 40 cas
+étiquetés : 40 montants lus correctement.
+
+**Effet mesuré sur les 40 cas** (`resultats/evaluation_juge.md`, mêmes traces
+que la brique 4) : au seuil 0,90, Qwen seul fait 1 raté (« Paiement PayPal
+9,99 € », score 0,953) ; avec G5, 0 raté, sans fausse alerte de plus. Au seuil
+0,80 : 5 ratés → 2.
+
+**Limite.** Les mots-clés de G5 (Lydia, PayPal, virement, rembours…) ont été
+choisis en connaissant les 40 cas : le gain mesuré est optimiste. Une dépense
+mixte (« courses et essence », R-X3) n'est pas couverte par le code.
+
+**Fichiers.** `src/garde_fous.py`, `tests/test_garde_fous.py`,
+`src/evaluer_juge.py` (option `avec_regles`), `tests/test_evaluer_juge.py`.
+
+**Commande pour reproduire.**
+
+```bash
+python -m pytest tests/test_garde_fous.py -v
+python src/evaluer_juge.py --depuis-traces
+```
 
 ## Brique 4 — Un modèle de décision
 

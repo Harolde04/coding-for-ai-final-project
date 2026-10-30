@@ -8,8 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 import evaluer_juge as e  # noqa: E402
 
-CAS_CLAIR_A = {"decision_attendue": "auto", "categorie_attendue": "A"}
-CAS_AMBIGU = {"decision_attendue": "confirmer", "categorie_attendue": "?"}
+CAS_CLAIR_A = {"texte": "Pâtes chez Carrefour 12 €", "decision_attendue": "auto", "categorie_attendue": "A"}
+CAS_AMBIGU = {"texte": "Amazon 25 €", "decision_attendue": "confirmer", "categorie_attendue": "?"}
 
 
 def lecture(lettre, score, valide=True):
@@ -43,3 +43,10 @@ def test_un_seuil_plus_haut_ne_diminue_jamais_les_fausses_alertes():
     lectures = [lecture("A", s) for s in (0.55, 0.85, 0.97)]
     alertes = [e.compter(cas, lectures, s)["fausse_alerte"] for s in e.SEUILS]
     assert alertes == sorted(alertes)
+
+
+def test_regles_du_code_transforment_un_rate_en_confirmation():
+    cas = {"texte": "Paiement PayPal 9,99 €", "decision_attendue": "confirmer", "categorie_attendue": "?"}
+    lec = lecture("E", 0.953)  # réponse réelle de Qwen sur ce cas
+    assert e.issue(cas, lec, seuil=0.90) == "rate_ambigu"
+    assert e.issue(cas, lec, seuil=0.90, avec_regles=True) == "correct"

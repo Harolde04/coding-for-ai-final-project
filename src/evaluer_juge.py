@@ -19,6 +19,7 @@ import json
 import sys
 from pathlib import Path
 
+import garde_fous
 import juge_qwen
 
 RACINE = Path(__file__).resolve().parent.parent
@@ -34,10 +35,12 @@ def charger_cas(chemin=FICHIER_CAS):
         return list(csv.DictReader(f, delimiter=";"))
 
 
-def issue(cas, lecture, seuil):
+def issue(cas, lecture, seuil, avec_regles=False):
     """Classe le résultat d'un cas : « correct », « rate_ambigu », « rate_categorie »
-    ou « fausse_alerte »."""
+    ou « fausse_alerte ». avec_regles : appliquer aussi les règles du code (brique 3)."""
     decision = juge_qwen.decider(lecture, seuil)
+    if avec_regles:
+        decision = garde_fous.decision_finale(cas["texte"], decision)
     if cas["decision_attendue"] == "confirmer":
         return "correct" if decision == "confirmer" else "rate_ambigu"
     if decision == "confirmer":
@@ -45,10 +48,10 @@ def issue(cas, lecture, seuil):
     return "correct" if lecture["lettre"] == cas["categorie_attendue"] else "rate_categorie"
 
 
-def compter(cas_liste, lectures, seuil):
+def compter(cas_liste, lectures, seuil, avec_regles=False):
     comptes = dict.fromkeys(("correct", "rate_ambigu", "rate_categorie", "fausse_alerte"), 0)
     for cas, lecture in zip(cas_liste, lectures):
-        comptes[issue(cas, lecture, seuil)] += 1
+        comptes[issue(cas, lecture, seuil, avec_regles)] += 1
     comptes["rates"] = comptes["rate_ambigu"] + comptes["rate_categorie"]
     return comptes
 
@@ -91,7 +94,18 @@ def ecrire_rapport(cas_liste, lectures):
         lignes.append(f"| {seuil:.2f}{marque} | {c['correct']} | {c['rate_ambigu']} / {n_conf} "
                       f"| {c['rate_categorie']} | {c['fausse_alerte']} / {n_auto} |")
 
-    lignes += ["", f"## Détail par cas (seuil {juge_qwen.SEUIL:.2f})", "",
+    lignes += ["", "## Avec les règles imposées par le code (brique 3)", "",
+               "La règle G5 de `src/garde_fous.py` impose une confirmation pour tout virement "
+               "ou paiement par intermédiaire, quel que soit le score de Qwen.", "",
+               "| Seuil | Qwen seul : ratés / fausses alertes | Qwen + règles du code : ratés / fausses alertes |",
+               "|---|---|---|"]
+    for seuil in SEUILS:
+        seul = compter(cas_liste, lectures, seuil)
+        regles = compter(cas_liste, lectures, seuil, avec_regles=True)
+        lignes.append(f"| {seuil:.2f} | {seul['rates']} / {seul['fausse_alerte']} "
+                      f"| {regles['rates']} / {regles['fausse_alerte']} |")
+
+    lignes += ["", f"## Détail par cas (seuil {juge_qwen.SEUIL:.2f}, Qwen seul)", "",
                "| id | Texte | Attendu | Lettre Qwen | Score | Décision | Issue |",
                "|---|---|---|---|---|---|---|"]
     for cas, lecture in zip(cas_liste, lectures):
@@ -117,8 +131,10 @@ def main(argv):
     ecrire_rapport(cas_liste, lectures)
     for seuil in SEUILS:
         c = compter(cas_liste, lectures, seuil)
+        r = compter(cas_liste, lectures, seuil, avec_regles=True)
         print(f"seuil {seuil:.2f} : {c['rates']} ratés ({c['rate_ambigu']} ambigus, "
-              f"{c['rate_categorie']} catégorie), {c['fausse_alerte']} fausses alertes")
+              f"{c['rate_categorie']} catégorie), {c['fausse_alerte']} fausses alertes"
+              f"  |  avec règles du code : {r['rates']} ratés, {r['fausse_alerte']} fausses alertes")
 
 
 if __name__ == "__main__":

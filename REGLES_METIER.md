@@ -116,6 +116,10 @@ Ces lignes sont retirées du jeu nettoyé et listées dans
   et les achats payés autrement pourraient être comptés deux fois.
 - **R-N4** Transferts entre comptes de la même personne.
 
+Les règles R-X1 et R-X2 sont aussi **imposées par le code** (brique 3) :
+`src/garde_fous.py` (règle G5) refuse d'enregistrer sans confirmation un
+virement ou un paiement par intermédiaire, quel que soit le score de Qwen.
+
 ## Comment ces règles alimentent la brique 4
 
 - `decision_attendue = auto` : la règle A–E suffit à trancher. Si le système

@@ -15,7 +15,21 @@ Fichier généré par `python src/evaluer_juge.py`. Ne pas modifier à la main.
 | 0.95 | 24 | 1 / 10 | 0 | 15 / 30 |
 | 0.99 | 15 | 0 / 10 | 0 | 25 / 30 |
 
-## Détail par cas (seuil 0.90)
+## Avec les règles imposées par le code (brique 3)
+
+La règle G5 de `src/garde_fous.py` impose une confirmation pour tout virement ou paiement par intermédiaire, quel que soit le score de Qwen.
+
+| Seuil | Qwen seul : ratés / fausses alertes | Qwen + règles du code : ratés / fausses alertes |
+|---|---|---|
+| 0.50 | 11 / 1 | 8 / 1 |
+| 0.60 | 10 / 1 | 7 / 1 |
+| 0.70 | 8 / 3 | 5 / 3 |
+| 0.80 | 5 / 8 | 2 / 8 |
+| 0.90 | 1 / 10 | 0 / 10 |
+| 0.95 | 1 / 15 | 0 / 15 |
+| 0.99 | 0 / 25 | 0 / 25 |
+
+## Détail par cas (seuil 0.90, Qwen seul)
 
 | id | Texte | Attendu | Lettre Qwen | Score | Décision | Issue |
 |---|---|---|---|---|---|---|
