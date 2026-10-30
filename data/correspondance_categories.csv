@@ -1,0 +1,31 @@
+categorie_origine;lettre;regle;commentaire
+Groceries;A;R-A2;supermarchés
+Food Shopping;A;R-A2;variante de libellé de Groceries
+Dine Out;A;R-A3;restaurants et livraison de repas
+Travel;B;R-B3;billets de train, bus, avion
+Mortgage;C;R-C1;mensualités de crédit immobilier
+Home Improvement;C;R-C3;travaux et équipement du logement
+Rent;C;R-C1;dépôt de garantie (feuille de description des auteurs)
+Entertainment;D;R-D1;sorties et divertissement
+Fitness;D;R-D2;salle de sport et yoga
+Hotels;D;R-D3;hébergement en voyage
+Clothes;E;R-E3;vêtements
+Health;E;R-E1;compléments alimentaires selon la feuille de description
+Purchase of uk.eg.org;E;R-E5;achat de nom de domaine
+Bills;MELANGEE;R-X4;eau, énergie, internet, taxe locale, frais bancaires, crédit
+Other Shopping;MELANGEE;R-X4;téléphone, meubles, vêtements, vélos, cadeaux
+Insurance;MELANGEE;R-X4;assurance vie, assurance d'objets, frais juridiques
+Others;MELANGEE;R-X4;frais bancaires, cotisations, poste, particuliers
+Amazon;MELANGEE;R-X1;marketplace sans article
+Services;MELANGEE;R-X2;paiements à des particuliers (feuille de description)
+Services/Home Improvement;MELANGEE;R-X2;paiements à un particulier
+VIDE;MELANGEE;R-X4;catégorie absente dans le fichier
+Savings;EXCLU;R-N1;épargne
+Investment;EXCLU;R-N1;placements
+Cash;EXCLU;R-N3;retraits au distributeur
+Paycheck;EXCLU;R-N2;salaire
+Interest;EXCLU;R-N2;intérêts
+Supplementary Income;EXCLU;R-N2;revenus et remboursements reçus
+Travel Reimbursement;EXCLU;R-N2;remboursement de frais
+Safety Deposit Return;EXCLU;R-N2;restitution de dépôt de garantie
+Account transfer;EXCLU;R-N4;transfert entre comptes

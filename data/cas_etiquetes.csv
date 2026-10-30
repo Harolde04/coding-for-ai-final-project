@@ -1,0 +1,41 @@
+id;texte;montant_attendu;categorie_attendue;categories_possibles;decision_attendue;regle;piege
+1;J'ai acheté des pâtes chez Carrefour pour 12 €.;12.00;A;A;auto;R-A1;
+2;J'ai payé 35 € chez Carrefour;35.00;A;A;auto;R-A2;supermarché sans article
+3;Resto U ce midi : 3,30 €;3.30;A;A;auto;R-A1;
+4;Kebab avec des potes, 9€50;9.50;A;A;auto;R-A3;repas entre amis ≠ loisir
+5;Commande Uber Eats 18,90 euros;18.90;A;A;auto;R-A4;Uber Eats ≠ transport
+6;Boulangerie : croissant et baguette 2.40€;2.40;A;A;auto;R-A1;
+7;Restaurant pour l'anniversaire de Léa, ma part 27 €;27.00;A;A;auto;R-A3;occasion festive ≠ loisir
+8;Recharge pass Navigo 86,40 €;86.40;B;B;auto;R-B1;
+9;Uber pour rentrer de soirée 14 €;14.00;B;B;auto;R-B2;le mot soirée ne rend pas l'achat loisir
+10;Billet de train SNCF pour Lyon pour les vacances 45 €;45.00;B;B;auto;R-B3;motif vacances ≠ nature
+11;Plein d'essence 60 €;60.00;B;B;auto;R-B2;
+12;Vélib' abonnement mensuel 3,10 €;3.10;B;B;auto;R-B2;abonnement mais transport
+13;Ticket de bus 1,90€;1.90;B;B;auto;R-B1;
+14;Loyer d'octobre 520 €;520.00;C;C;auto;R-C1;
+15;Facture EDF 42,15 €;42.15;C;C;auto;R-C2;
+16;Box internet Free 29,99 €;29.99;C;C;auto;R-C2;Free box ≠ Free mobile
+17;Assurance habitation 8 € ce mois-ci;8.00;C;C;auto;R-C3;
+18;Lampe IKEA pour ma chambre 15 €;15.00;C;C;auto;R-C3;
+19;Place de cinéma 11 €;11.00;D;D;auto;R-D1;
+20;Abonnement Netflix 13,49 €;13.49;D;D;auto;R-D2;
+21;Bières au bar avec la promo 22 €;22.00;D;D;auto;R-D1;boisson au bar ≠ alimentation
+22;Airbnb à Barcelone pour le week-end 120 €;120.00;D;D;auto;R-D3;hébergement ≠ logement
+23;Salle de sport Basic-Fit 24,99 €;24.99;D;D;auto;R-D2;
+24;Place de concert 45 €;45.00;D;D;auto;R-D1;
+25;Forfait mobile Free 19,99 €;19.99;E;E;auto;R-E2;Free mobile ≠ Free box
+26;Pharmacie, médicaments 7,80 €;7.80;E;E;auto;R-E1;
+27;Jean chez Zara 39,95 €;39.95;E;E;auto;R-E3;
+28;Coiffeur 18 €;18.00;E;E;auto;R-E3;
+29;Cahiers et stylos pour les cours 12,60 €;12.60;E;E;auto;R-E3;
+30;Carte cadeau Fnac pour l'anniversaire de mon frère 25 €;25.00;E;E;auto;R-E3;Fnac nommée mais achat précisé
+31;Amazon 25 €;25.00;?;A|B|C|D|E;confirmer;R-X1;
+32;Virement Lydia à Thomas 15 €;15.00;?;A|B|C|D|E;confirmer;R-X2;
+33;Leclerc 70 € : courses et essence;70.00;?;A|B;confirmer;R-X3;supermarché mais dépense mixte
+34;Fnac 30 €;30.00;?;D|E;confirmer;R-X1;
+35;Relay gare du Nord 6,50 €;6.50;?;A|D|E;confirmer;R-X1;le mot gare n'implique pas transport
+36;Dépense de 40 € hier;40.00;?;A|B|C|D|E;confirmer;R-X4;
+37;J'ai remboursé Julie 20 € pour samedi;20.00;?;A|D;confirmer;R-X2;
+38;Action 12 €;12.00;?;C|D|E;confirmer;R-X1;
+39;Paiement PayPal 9,99 €;9.99;?;A|B|C|D|E;confirmer;R-X1;
+40;Abonnement 9,99 € par mois;9.99;?;D|E;confirmer;R-X4;abonnement sans service nommé

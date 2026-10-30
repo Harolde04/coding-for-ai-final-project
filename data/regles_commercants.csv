@@ -1,0 +1,34 @@
+motif;lettre;regle;justification;categories_possibles
+SAVE THE CHANGE|ESAVINGS ACCOUNT;EXCLU;R-N1;versement vers l'épargne;
+TRADING ?212|WWW\.III\.CO\.UK;EXCLU;R-N1;plateforme d'investissement;
+NON-(GBP|STG) .*FEE|FOREIGN CASH FEE;E;R-E4;frais de change de la banque;
+CLUB LLOYDS FEE|^ACCOUNT FEE$|^SILVER ACCOUNT$;E;R-E4;frais de tenue de compte;
+VIRGIN MEDIA|TALKTALK|PLUSNET;C;R-C2;fournisseur internet du logement;
+\bWATER\b|ENERGY|RENEWABLE ENER|ECOTRICITY|BRITISH GAS;C;R-C2;fournisseur d'eau ou d'énergie;
+C\.TAX|NOTTM CITY COUNC;C;R-C2;taxe locale du logement (council tax);
+MTGES|MORTGAGE|PRINCIPALITY BS;C;R-C1;mensualité de crédit immobilier;
+DEZREZ|SOLICITORS;?;R-X4;frais juridiques : aucune règle ne les couvre;C|E
+REMOVALS|EUROPEAN MOVING;C;R-C3;entreprise de déménagement;
+IKEA;C;R-C3;meubles et équipement du logement;
+TV LICENCE;D;R-D4;redevance télévisuelle;
+^O2$|SKYPE;E;R-E2;opérateur téléphonique;
+LV LIFE|AVIVA LIFE|LVFS;E;R-E4;assurance vie;
+ASSURANT;E;R-E6;assurance téléphone mobile (source : Lloyds Bank);
+ZURICH;?;R-X6;type d'assurance inconnu;C|E
+HOLLAND & BARRETT|HEALTH SHOP;E;R-E1;magasin de compléments alimentaires;
+T K MAXX|MOUNTAIN WAREHOUSE|SKECHERS|SPORTSDIRECT|J D SPORTS|DEBENHAMS;E;R-E3;enseigne de vêtements ou chaussures;
+LUSH|BODY SHOP|KIEHLS|SUPERDRUG|BOOTS;E;R-E3;enseigne d'hygiène et beauté;
+INSTANT INK|HP INC;E;R-E3;encre et fournitures d'imprimante;
+GIFT|FLOWERS;E;R-E3;boutique de cadeaux ou fleuriste;
+BIKE|BIK$|CYCLE;?;R-X5;achat de vélo sans indication d'usage;B|D
+WILKO|ONEBELOW|SAVERS|POST OFFICE|PAYPAL;?;R-X1;commerce généraliste sans article précisé;A|C|D|E
+UCU|UNIV & COL UNION;E;R-E5;cotisation syndicale;
+VISA SERVICE|GODADDY|NAME-CHEAP|WIKIMEDIA;E;R-E5;visa, nom de domaine ou don;
+WAITROSE|\bSPAR\b|JUMBO;A;R-A2;supermarché;
+REVOLUTION DE CUBA;D;R-D1;bar (pas un repas);
+YOUTUBE;D;R-D2;service de vidéo;
+GETYOURGUIDE;D;R-D1;activité touristique;
+\bHOTEL|HILTON|\bHTL\b|SCANDIC|EMBASSY SUITES|ESTREL|^B\.COM|HOSTEL|BOOKINGUK;D;R-D3;hébergement en voyage;
+EXPEDIA;?;R-X1;agence de voyage : vol (B) ou hôtel (D);B|D
+ABN-AMRO|BANCA CARIGE;?;R-X4;banque étrangère : probablement un retrait, non vérifiable;A|B|C|D|E
+IEEE CONFE;?;R-X4;inscription à une conférence : aucune règle ne la couvre;D|E

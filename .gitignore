@@ -1,0 +1,13 @@
+# Fichier brut MoneyData : contient de vrais noms de particuliers (R1).
+# À télécharger depuis Mendeley, voir README.
+laramee26openBankTransactionData.xlsx
+
+# Documents personnels hors projet
+Projet_Final_Coding_for_AI_2026-27.pdf
+*_image.png
+
+# Python
+__pycache__/
+.pytest_cache/
+.venv/
+.env
