@@ -21,3 +21,26 @@
 {"horodatage": "2026-10-30T20:26:40", "etape": "appel_outil", "outil": "calculer_budget", "arguments": {}}
 {"horodatage": "2026-10-30T20:26:40", "etape": "resultat_outil", "outil": "calculer_budget", "resultat": {"mois": "2026-10", "nombre_depenses": 2, "total": "54.99", "par_categorie": {"A Alimentation": "45.00", "D Loisirs": "9.99"}, "budget_mensuel": "800.00", "budget_restant": "745.01"}}
 {"horodatage": "2026-10-30T20:26:58", "etape": "modele", "contenu": "Il vous reste 745,01 €. Vous avez dépensé un total de 54,99 € (45 € pour l'alimentation et 9,99 € pour les loisirs)."}
+{"horodatage": "2026-11-03T13:29:07", "etape": "utilisateur", "contenu": "Mon budget pour ce mois est de 600 €"}
+{"horodatage": "2026-11-03T13:29:26", "etape": "appel_outil", "outil": "definir_budget", "arguments": {"montant": 600}}
+{"horodatage": "2026-11-03T13:29:26", "etape": "resultat_outil", "outil": "definir_budget", "resultat": {"statut": "budget_defini", "budget_mensuel": "600.00"}}
+{"horodatage": "2026-11-03T13:29:31", "etape": "modele", "contenu": "Votre budget mensuel est fixé à 600 €. Je suis prêt pour vous aider avec vos dépenses !"}
+{"horodatage": "2026-11-03T13:29:38", "etape": "utilisateur", "contenu": "J'ai payé 35 € chez Carrefour"}
+{"horodatage": "2026-11-03T13:29:46", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": 35, "categorie": "A"}}
+{"horodatage": "2026-11-03T13:29:56", "etape": "juge", "lettre": "A", "score": 0.994, "regle_code": null, "decision": "auto"}
+{"horodatage": "2026-11-03T13:29:56", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "enregistre", "montant": "35.00", "categorie": "A Alimentation", "confirme_par_utilisateur": false}}
+{"horodatage": "2026-11-03T13:30:17", "etape": "modele", "contenu": "La dépense de 35 € pour l'alimentation a été enregistrée. Souhaitez-vous voir votre budget restant ou ajouter d'autres dépenses ?"}
+{"horodatage": "2026-11-03T13:30:46", "etape": "utilisateur", "contenu": "Paiement PayPal 9,99 €"}
+{"horodatage": "2026-11-03T13:30:53", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": 9.99, "categorie": "E"}}
+{"horodatage": "2026-11-03T13:31:03", "etape": "juge", "lettre": "E", "score": 0.953, "regle_code": "transfert ou intermédiaire de paiement : « PayPal »", "decision": "confirmer"}
+{"horodatage": "2026-11-03T13:33:27", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "enregistre", "montant": "9.99", "categorie": "E Autres", "confirme_par_utilisateur": true}}
+{"horodatage": "2026-11-03T13:33:51", "etape": "modele", "contenu": "La dépense de 9,99 € pour les autres a été enregistrée. Souhaitez-vous voir votre budget restant ou ajouter d'autres dépenses ?"}
+{"horodatage": "2026-11-03T13:35:23", "etape": "utilisateur", "contenu": "J'ai payé -10 € au cinéma"}
+{"horodatage": "2026-11-03T13:35:29", "etape": "appel_outil", "outil": "enregistrer_depense", "arguments": {"montant": -10, "categorie": "D"}}
+{"horodatage": "2026-11-03T13:35:39", "etape": "juge", "lettre": "D", "score": 0.957, "regle_code": null, "decision": "auto"}
+{"horodatage": "2026-11-03T13:35:39", "etape": "resultat_outil", "outil": "enregistrer_depense", "resultat": {"statut": "refuse", "regle": "G1", "motif": "montant négatif ou nul : -10.00"}}
+{"horodatage": "2026-11-03T13:36:04", "etape": "modele", "contenu": "Je ne peux pas enregistrer une dépense de 10 € au cinéma car le montant doit être positif. Souhaitez-vous ajouter d'autres dépenses ?"}
+{"horodatage": "2026-11-03T13:36:21", "etape": "utilisateur", "contenu": "Combien il me reste ?"}
+{"horodatage": "2026-11-03T13:36:39", "etape": "appel_outil", "outil": "calculer_budget", "arguments": {}}
+{"horodatage": "2026-11-03T13:36:39", "etape": "resultat_outil", "outil": "calculer_budget", "resultat": {"mois": "2026-11", "nombre_depenses": 2, "total": "44.99", "par_categorie": {"A Alimentation": "35.00", "E Autres": "9.99"}, "budget_mensuel": "600.00", "budget_restant": "555.01"}}
+{"horodatage": "2026-11-03T13:37:01", "etape": "modele", "contenu": "Il vous reste 555,01 € sur votre budget de 600 €. Vous avez dépensé un total de 44,99 €, soit 35 € pour l'alimentation et 9,99 € pour les autres."}
