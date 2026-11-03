@@ -8,7 +8,7 @@ l'écrire et à le lancer ; le code est vérifié par des tests.
 
 - **Outils.** Claude (Claude Code, application de bureau) pour la conception,
   le code, les tests et la rédaction ; Qwen3.5-4B (Ollama) est le modèle du projet.
-- **Export brut.** La conversation complète est dans `ai_log/conversations_brutes.txt`.
+- **Export brut.** La conversation complète est dans `ai_log/conversation_assistant_depenses.txt`.
 - **Répartition.** L'essentiel du code a été écrit par l'IA et gardé tel quel
   après relecture et tests (168 tests pytest). Les choix de règles métier, de
   données, de seuil et de méthode de mesure sont les miens : ils sont listés
